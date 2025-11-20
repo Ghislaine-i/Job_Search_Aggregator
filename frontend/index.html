@@ -3,113 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobFinder - ghislaine.tech</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>JobFinder Pro - Find Your Dream Job</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-<header class="header">
-    <div class="container">
-        <div class="header-content">
-            <div>
-                <h1>JobFinder</h1>
-                <p class="subtitle">by ghislaine.tech</p>
-            </div>
-            <div class="job-count">
-                <span id="jobCount">0 jobs found</span>
+<header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo"><i class="fas fa-briefcase"></i> JobFinder Pro</h1>
+            <div class="nav-links">
+                <a href="#search">Search Jobs</a>
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
             </div>
         </div>
-    </div>
+    </nav>
 </header>
 
-<main class="container main-content">
-    <!-- Search Section -->
-    <div class="search-section">
-        <div class="search-input-wrapper">
-            <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Search by job title, keywords, or company..."
-                    class="search-input"
-            >
+<main>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Find Your Dream Job Today</h1>
+            <p>Search through thousands of job listings from top companies worldwide</p>
         </div>
+    </section>
 
-        <button id="filterToggle" class="filter-toggle">
-            Show Filters
-        </button>
+    <section id="search" class="search-section">
+        <div class="container">
+            <div class="search-box">
+                <h2>Search Jobs</h2>
+                <form id="searchForm">
+                    <div class="search-input-group">
+                        <input type="text" id="jobQuery" placeholder="Enter job title, keywords, or company..." required>
+                        <input type="text" id="jobLocation" placeholder="Location (optional)">
+                        <button type="submit" id="searchBtn">
+                            <i class="fas fa-search"></i> Search Jobs
+                        </button>
+                    </div>
+                </form>
 
-        <div id="filtersContainer" class="filters-container hidden">
-            <div class="filters-grid">
-                <div class="filter-group">
-                    <label>Location</label>
-                    <input
-                            type="text"
-                            id="locationInput"
-                            placeholder="e.g., San Francisco, Remote"
-                            class="filter-input"
-                    >
-                </div>
+                <div class="filters">
+                    <h3>Filters</h3>
+                    <div class="filter-options">
+                        <select id="employmentType">
+                            <option value="">Any Employment Type</option>
+                            <option value="FULLTIME">Full-time</option>
+                            <option value="PARTTIME">Part-time</option>
+                            <option value="CONTRACTOR">Contract</option>
+                            <option value="INTERN">Internship</option>
+                        </select>
 
-                <div class="filter-group">
-                    <label>Work Type</label>
-                    <select id="jobTypeSelect" class="filter-input">
-                        <option value="all">All Types</option>
-                        <option value="remote">Remote</option>
-                        <option value="hybrid">Hybrid</option>
-                        <option value="onsite">Onsite</option>
-                    </select>
-                </div>
+                        <select id="datePosted">
+                            <option value="">Any Time</option>
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="3days">Last 3 Days</option>
+                            <option value="week">Last Week</option>
+                            <option value="month">Last Month</option>
+                        </select>
 
-                <div class="filter-group">
-                    <label>Minimum Salary</label>
-                    <input
-                            type="number"
-                            id="salaryInput"
-                            placeholder="e.g., 80000"
-                            class="filter-input"
-                    >
+                        <select id="remote">
+                            <option value="">Any Work Type</option>
+                            <option value="true">Remote Only</option>
+                            <option value="false">On-site Only</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="action-buttons">
-            <button id="searchBtn" class="btn btn-primary">Search Jobs</button>
-            <button id="clearBtn" class="btn btn-secondary">Clear Filters</button>
+    <section class="results-section">
+        <div class="container">
+            <div id="loading" class="loading hidden">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Searching for jobs...</p>
+            </div>
+
+            <div id="errorMessage" class="error-message hidden"></div>
+
+            <div id="resultsInfo" class="results-info hidden">
+                <h3>Search Results</h3>
+                <p id="resultsCount"></p>
+            </div>
+
+            <div id="jobsList" class="jobs-list"></div>
+
+            <div id="pagination" class="pagination hidden"></div>
         </div>
-    </div>
+    </section>
 
-    <!-- Loading State -->
-    <div id="loadingState" class="loading-state hidden">
-        <div class="spinner"></div>
-        <p>Searching for jobs...</p>
-    </div>
-
-    <!-- Error Message -->
-    <div id="errorMessage" class="error-message hidden"></div>
-
-    <!-- Results Container -->
-    <div id="resultsContainer" class="results-container"></div>
-
-    <!-- Initial State -->
-    <div id="initialState" class="initial-state">
-        <div class="initial-state-content">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-            </svg>
-            <h3>Start Your Job Search</h3>
-            <p>Enter keywords and filters above to find your next opportunity</p>
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2>Why Use JobFinder Pro?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-database"></i>
+                    <h3>Extensive Database</h3>
+                    <p>Access thousands of job listings from various industries and locations</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-filter"></i>
+                    <h3>Smart Filters</h3>
+                    <p>Filter jobs by location, employment type, date posted, and more</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Real-time Results</h3>
+                    <p>Get the latest job postings updated in real-time</p>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 </main>
 
-<footer class="footer">
+<footer>
     <div class="container">
-        <p>&copy; 2024 JobFinder by ghislaine.tech | Powered by Multiple Job APIs</p>
+        <p>&copy; 2024 JobFinder Pro. Powered by JSearch API.</p>
     </div>
 </footer>
 
-<script src="js/config.js"></script>
-<script src="js/api.js"></script>
-<script src="js/app.js"></script>
+<!-- Job Details Modal -->
+<div id="jobModal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<script src="scripts/app.js"></script>
 </body>
 </html>

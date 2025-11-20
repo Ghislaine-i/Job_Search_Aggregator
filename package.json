@@ -1,0 +1,28 @@
+{
+  "name": "job-finder-app",
+  "version": "1.0.0",
+  "description": "A job search application using JSearch API",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "setup": "npm install"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "jobs",
+    "search",
+    "api",
+    "career"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
