@@ -81,17 +81,24 @@ class JobFinder {
                 }
             });
 
+            console.log('🔍 Making API request to:', `/api/jobs?${params}`);
+
             const response = await fetch(`/api/jobs?${params}`);
 
+            console.log('📡 Response status:', response.status);
+
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log('📊 API response data:', data);
+
             this.displayResults(data);
         } catch (error) {
-            console.error('Search error:', error);
-            this.showError('Failed to search for jobs. Please try again later.');
+            console.error('❌ Search error:', error);
+            this.showError(`Failed to search for jobs: ${error.message}`);
         } finally {
             this.hideLoading();
         }
@@ -101,6 +108,7 @@ class JobFinder {
         this.currentFilters = {
             employment_type: document.getElementById('employmentType').value,
             date_posted: document.getElementById('datePosted').value,
+            contract_type: document.getElementById('employmentType').value,
             remote: document.getElementById('remote').value
         };
 
@@ -141,6 +149,9 @@ class JobFinder {
         const postedDate = job.job_posted_at_datetime_utc ?
             new Date(job.job_posted_at_datetime_utc).toLocaleDateString() : 'Recently';
 
+        // Escape the job_id for the onclick attribute
+        const escapedJobId = this.escapeHtml(job.job_id);
+
         return `
             <div class="job-card">
                 <div class="job-header">
@@ -170,7 +181,7 @@ class JobFinder {
                 </p>
                 
                 <div class="job-actions">
-                    <button class="view-details-btn" onclick="jobFinder.viewJobDetails('${job.job_id}')">
+                    <button class="view-details-btn" onclick="jobFinder.viewJobDetails('${escapedJobId}')">
                         <i class="fas fa-eye"></i> View Details
                     </button>
                     ${job.job_apply_link ? `
@@ -180,13 +191,21 @@ class JobFinder {
                     ` : ''}
                 </div>
             </div>
+            <span class="job-source">Source: ${job.source}</span>
         `;
     }
 
     async viewJobDetails(jobId) {
         try {
+            console.log('🔍 Fetching job details for:', jobId);
             const response = await fetch(`/api/job-details?job_id=${jobId}`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const data = await response.json();
+            console.log('📊 Job details response:', data);
 
             if (data.data && data.data.length > 0) {
                 this.showJobModal(data.data[0]);
@@ -194,7 +213,7 @@ class JobFinder {
                 throw new Error('Job details not found');
             }
         } catch (error) {
-            console.error('Error fetching job details:', error);
+            console.error('❌ Error fetching job details:', error);
             this.showError('Failed to load job details. Please try again.');
         }
     }
@@ -215,9 +234,9 @@ class JobFinder {
                 <p><strong>Company:</strong> ${this.escapeHtml(job.employer_name)}</p>
                 <p><strong>Location:</strong> ${this.escapeHtml(job.job_city || '')} ${this.escapeHtml(job.job_country || 'Not specified')}</p>
                 <p><strong>Salary:</strong> ${salary}</p>
-                <p><strong>Employment Type:</strong> ${this.escapeHtml(job.job_employment_type || 'Not specified')</p>
-        <p><strong>Posted:</strong> ${postedDate}</p>
-        </div>
+                <p><strong>Employment Type:</strong> ${this.escapeHtml(job.job_employment_type || 'Not specified')}</p>
+                <p><strong>Posted:</strong> ${postedDate}</p>
+            </div>
             
             <div class="job-full-description">
                 <h3>Job Description</h3>
@@ -273,37 +292,45 @@ class JobFinder {
 
         if (this.currentPage > 1) {
             pagination.innerHTML += `
-        <button class="page-btn" onclick="jobFinder.searchJobs(${this.currentPage - 1})">
-        <i class="fas fa-chevron-left"></i> Previous
-        </button>
-        `;
+                <button class="page-btn" onclick="jobFinder.searchJobs(${this.currentPage - 1})">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+            `;
         }
 
         pagination.innerHTML += `
-        <button class="page-btn active">Page ${this.currentPage}</button>
+            <button class="page-btn active">Page ${this.currentPage}</button>
         `;
 
         pagination.innerHTML += `
-        <button class="page-btn" onclick="jobFinder.searchJobs(${this.currentPage + 1})">
-        Next <i class="fas fa-chevron-right"></i>
-        </button>
+            <button class="page-btn" onclick="jobFinder.searchJobs(${this.currentPage + 1})">
+                Next <i class="fas fa-chevron-right"></i>
+            </button>
         `;
     }
 
     formatSalary(salary) {
         if (!salary) return 'Not specified';
-        // Simple salary formatting - you might want to enhance this
-        return salary.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+        // Handle different salary formats
+        if (typeof salary === 'string') {
+            // Extract numbers from salary string
+            const numbers = salary.match(/\d+/g);
+            if (numbers && numbers.length > 0) {
+                // Take the largest number found (usually the max salary)
+                const maxSalary = Math.max(...numbers.map(Number));
+                return maxSalary.toLocaleString();
+            }
+        }
+
+        return 'Not specified';
     }
 
     escapeHtml(unsafe) {
         if (!unsafe) return '';
-        return unsafe
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+        const div = document.createElement('div');
+        div.textContent = unsafe;
+        return div.innerHTML;
     }
 
     showLoading() {
