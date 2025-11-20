@@ -1,0 +1,174 @@
+/* ==== GLOBAL STYLES ==== */
+:root {
+    --accent: #0066ff;
+    --accent-dark:#004fcc;
+    --bg:#f8fafc;
+    --text:#0c2037;
+    --muted:#697b8c;
+    --radius:12px;
+    --shadow:0 4px 16px rgba(0,0,0,0.06);
+    --font: "Inter", system-ui, -apple-system, "Segoe UI", Arial;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    margin: 0;
+    padding: 0;
+    color: var(--text);
+}
+
+/* ==== HEADER ==== */
+.app-header {
+    text-align: center;
+    padding: 32px 12px 12px;
+}
+.brand {
+    font-size: 2rem;
+    font-weight: 700;
+}
+.brand span {
+    color: var(--accent);
+}
+.tagline {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+/* ==== MAIN CONTAINER ==== */
+.container {
+    max-width: 960px;
+    margin: auto;
+    padding: 12px;
+}
+
+/* ==== SEARCH BOX ==== */
+.search-box {
+    background: #fff;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    border-radius: var(--radius);
+    margin-bottom: 18px;
+}
+.form-group {
+    margin-bottom: 10px;
+}
+.form-group label {
+    font-weight: 600;
+    font-size: 0.88rem;
+    display: block;
+    margin-bottom: 4px;
+}
+.search-box input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dce6ef;
+    border-radius: var(--radius);
+}
+.search-box input:focus {
+    outline: 2px solid var(--accent);
+}
+
+/* ==== BUTTONS ==== */
+.btn-primary {
+    background: var(--accent);
+    padding: 10px 14px;
+    border: none;
+    border-radius: var(--radius);
+    color: #fff;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+    font-size: 1rem;
+}
+.btn-primary:hover { background: var(--accent-dark); }
+
+.btn-clear {
+    background: transparent;
+    border: 1px solid #ccd7e6;
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+.btn-clear:hover {
+    background: #f1f5fa;
+}
+
+/* ==== TOOLS ==== */
+.tools {
+    margin-bottom: 18px;
+}
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.control-item label {
+    font-size: 0.84rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+    display: block;
+}
+.control-item input, .control-item select {
+    padding: 8px 10px;
+    border-radius: var(--radius);
+    border: 1px solid #dce6ef;
+}
+
+/* ==== RESULTS ==== */
+.results {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.results li {
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    background: #fff;
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+}
+.result-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.result-meta {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+.result-desc {
+    font-size: 0.9rem;
+    color: #1a2e48;
+    margin-bottom: 10px;
+}
+.btn-apply {
+    font-weight: 600;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    text-decoration: none;
+}
+.btn-apply:hover { color: #fff; background: var(--accent); }
+
+/* ==== STATUS / LOADER ==== */
+.status {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+.loading {
+    text-align: center;
+    padding: 12px;
+    color: var(--accent-dark);
+    font-weight: 500;
+}
+.hidden { display: none; }
+
+/* ==== FOOTER ==== */
+.footer {
+    text-align: center;
+    margin-top: 50px;
+    padding: 25px 4px;
