@@ -4,9 +4,8 @@ A full-stack web application that aggregates job listings from multiple APIs, de
 
 ## 🌐 Live Demo
 
-- **Production URL**: http://ghislaine.tech (or http://18.233.164.134)
-- **Web Server 1**: http://3.84.23.169
-- **Web Server 2**: http://3.86.248.143
+- **Production URL**: http://ghislaine.tech
+- **Note**: The application is deployed with load balancing across multiple web servers for high availability
 
 ## 📋 Table of Contents
 
@@ -40,10 +39,10 @@ A full-stack web application that aggregates job listings from multiple APIs, de
                        ↓
               [Load Balancer - Lb01]
                (Nginx Round-Robin)
-                 18.233.164.134
+                 lb-01
                    ↙         ↘
-         [Web Server 1]   [Web Server 2]
-          3.84.23.169      3.86.248.143
+         [web-01 IP ]   [web-02 IP]
+          web-01 IP adress      web-02 IP adress
          Node.js + Nginx  Node.js + Nginx
               ↓                  ↓
          [PM2 Process]    [PM2 Process]
@@ -76,7 +75,7 @@ A full-stack web application that aggregates job listings from multiple APIs, de
 - dotenv for environment variables
 
 ### Deployment & DevOps
-- **Web Servers**: Nginx (reverse proxy)
+- **web Servers**: Nginx (reverse proxy)
 - **Load Balancer**: Nginx (upstream configuration)
 - **Process Manager**: PM2
 - **OS**: Ubuntu 20.04 LTS
@@ -85,7 +84,7 @@ A full-stack web application that aggregates job listings from multiple APIs, de
 ## 📡 APIs Used
 
 ### 1. Adzuna API
-- **Description**: Job search engine aggregating listings from thousands of websites
+- **Description**: Job search engine aggregating listings from thousands of web-02 IP adresssites
 - **Documentation**: https://developer.adzuna.com/
 - **Tier**: Free tier (up to 1,000 requests/month)
 - **Data Provided**: Job title, company, location, salary, description, posting date
@@ -184,7 +183,7 @@ curl "http://localhost:3000/api/jobs?query=software+engineer&location=usa"
 
 ### Server Requirements
 
-- 3 Ubuntu 20.04 LTS servers (web-01, web-02, Lb01)
+- 3 Ubuntu 20.04 LTS servers (web-02 IP adress01, web-02 IP adress02, Lb01)
 - SSH access with sudo privileges
 - Open ports: 22 (SSH), 80 (HTTP), 443 (HTTPS)
 
@@ -336,17 +335,17 @@ sudo ufw enable
 sudo ufw status
 ```
 
-#### Step 6: Test the Web Server
+#### Step 6: Test the web Server
 
 ```bash
 # Test locally
 curl http://localhost/health
 
 # Test from another server
-curl http://WEB-SERVER-IP/health
+curl http://web-02 IP adress-SERVER-IP/health
 ```
 
-**Repeat Steps 1-6 for both web-01 and web-02**
+**Repeat Steps 1-6 for both web-02 IP adress01 and web-02 IP adress02**
 
 ### Part 2: Configure Load Balancer (Lb01)
 
@@ -376,8 +375,8 @@ Add this configuration (replace IPs with your actual server IPs):
 
 ```nginx
 upstream job_finder_backend {
-    server 3.84.23.169:80 max_fails=3 fail_timeout=30s;
-    server 3.86.248.143:80 max_fails=3 fail_timeout=30s;
+    server web-01 IP adress:80 max_fails=3 fail_timeout=30s;
+    server web-02 IP adress:80 max_fails=3 fail_timeout=30s;
 }
 
 server {
@@ -457,21 +456,21 @@ for i in {1..10}; do
 done
 ```
 
-You should see responses alternating between web-01 and web-02.
+You should see responses alternating between web-02 IP adress01 and web-02 IP adress02.
 
 ### Test Failover
 
 ```bash
 # On web-01, stop the application
-ssh ubuntu@web-01-ip
+ssh ubuntu@web01-ip
 pm2 stop job-search-aggregator
 
 # From Lb01, send requests
 curl http://localhost/health
 # All traffic should now go to web-02
 
-# Restart web-01
-ssh ubuntu@web-01-ip
+# Restart web-02 IP adress01
+ssh ubuntu@web-02 IP adress01-ip
 pm2 start job-search-aggregator
 
 # Traffic should resume to both servers
@@ -514,7 +513,7 @@ sudo tail -f /var/log/nginx/job-search-aggregator-error.log
 - Added `.env.example` as a template without actual keys
 - Documented the need for API keys in README
 
-### Challenge 3: Port Conflicts on Web Servers
+### Challenge 3: Port Conflicts on web-02 IP adress Servers
 **Problem**: Multiple PM2 instances trying to use port 3000.
 
 **Solution**:
@@ -541,7 +540,7 @@ sudo tail -f /var/log/nginx/job-search-aggregator-error.log
 - Used round-robin algorithm (Nginx default)
 
 ### Challenge 6: Cross-Server Communication
-**Problem**: Load balancer couldn't reach web servers.
+**Problem**: Load balancer couldn't reach web-02 IP adress servers.
 
 **Solution**:
 - Configured firewall rules (UFW) to allow HTTP traffic on port 80
@@ -557,10 +556,10 @@ sudo tail -f /var/log/nginx/job-search-aggregator-error.log
 
 ### Technologies & Libraries
 - **Node.js**: https://nodejs.org/ - JavaScript runtime
-- **Express.js**: https://expressjs.com/ - Web framework
+- **Express.js**: https://expressjs.com/ - web-02 IP adress framework
 - **Axios**: https://axios-http.com/ - HTTP client
 - **PM2**: https://pm2.keymetrics.io/ - Process manager
-- **Nginx**: https://nginx.org/ - Web server and load balancer
+- **Nginx**: https://nginx.org/ - web-02 IP adress server and load balancer
 - **dotenv**: https://github.com/motdotla/dotenv - Environment variable management
 
 ### Resources
@@ -580,11 +579,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/ghislaine-i/Job_Search_Aggregator/issues).
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/yourusername/Job_Search_Aggregator/issues).
 
 ## 📞 Support
 
-For support, email your.email@example.com or create an issue in the GitHub repository.
+For support, email g.ineza@alustudent.com or create an issue in the GitHub repository.
 
 ---
 
