@@ -5,6 +5,8 @@ A full-stack web application that aggregates job listings from multiple APIs, de
 ## 🌐 Live Demo
 
 - **Production URL**: http://ghislaine.tech
+- **Demo video**: https://youtu.be/06PFJ4dH-Y8?si=lGYVJuBfhUV1a5tT
+
 - **Note**: The application is deployed with load balancing across multiple web servers for high availability
 
 ## 📋 Table of Contents
