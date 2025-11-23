@@ -5,6 +5,7 @@ A full-stack web application that aggregates job listings from multiple APIs, de
 ## 🌐 Live Demo
 
 - **Production URL**: http://ghislaine.tech
+- **Demo Video **: https://youtu.be/06PFJ4dH-Y8?si=lGYVJuBfhUV1a5tT
 - **Note**: The application is deployed with load balancing across multiple web servers for high availability
 
 ## 📋 Table of Contents
@@ -586,5 +587,6 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 For support, email g.ineza@alustudent.com or create an issue in the GitHub repository.
 
 ---
+
 
 **Note**: Remember to never commit your `.env` file or expose your API keys publicly!
